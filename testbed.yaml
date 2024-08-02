@@ -1,0 +1,31 @@
+testbed:
+  name: sample_testbed
+  credentials:
+    default:
+      username: username
+      password: password
+
+devices:
+  device1:
+    os: ios
+    type: router
+    connections:
+      cli:
+        protocol: ssh
+        ip: 192.168.1.1
+
+  device2:
+    os: ios
+    type: router
+    connections:
+      cli:
+        protocol: ssh
+        ip: 192.168.1.2
+
+  device3:
+    os: ios
+    type: switch
+    connections:
+      cli:
+        protocol: ssh
+        ip: 192.168.1.3
