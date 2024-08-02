@@ -9,9 +9,18 @@ testbed = loader.load('testbed.yaml')
 # Initialize Genie
 genie_testbed = Genie.init(testbed)
 
-# Connect to devices
-device1 = genie_testbed.devices['device1']
-device2 = genie_testbed.devices['device2']
+# Get the list of device names from the testbed
+device_names = list(genie_testbed.devices.keys())
+
+if len(device_names) < 2:
+    raise ValueError("The testbed must contain at least two devices for comparison.")
+
+# Connect to the first two devices in the testbed
+device1_name = device_names[0]
+device2_name = device_names[1]
+
+device1 = genie_testbed.devices[device1_name]
+device2 = genie_testbed.devices[device2_name]
 
 device1.connect()
 device2.connect()
@@ -26,11 +35,11 @@ diff.findDiff()
 
 # Generate a filename with current timestamp
 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-filename = f"config_diff_{device1.name}_vs_{device2.name}_{timestamp}.txt"
+filename = f"config_diff_{device1_name}_vs_{device2_name}_{timestamp}.txt"
 
 # Save the diff to a file
 with open(filename, 'w') as f:
-    f.write(f"Configuration Difference between {device1.name} and {device2.name}\n")
+    f.write(f"Configuration Difference between {device1_name} and {device2_name}\n")
     f.write(f"Generated on: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
     f.write(str(diff))
 
