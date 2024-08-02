@@ -2,6 +2,8 @@ from pyats.topology import loader
 from genie.conf import Genie
 from genie.utils.diff import Diff
 from datetime import datetime
+import sys
+
 
 # Load the testbed file
 testbed = loader.load('testbed.yaml')
@@ -15,9 +17,17 @@ device_names = list(genie_testbed.devices.keys())
 if len(device_names) < 2:
     raise ValueError("The testbed must contain at least two devices for comparison.")
 
-# Connect to the first two devices in the testbed
-device1_name = device_names[0]
-device2_name = device_names[1]
+# Connect to the devices in sys.argv (user provided), or the first 2 if not provided.
+if len(sys.argv) == 3:
+    device1_name = sys.argv[1]
+    device2_name = sys.argv[2]
+else:
+    device1_name = device_names[0]
+    device2_name = device_names[1]
+
+# Ensure the specified devices exist in the testbed
+if device1_name not in genie_testbed.devices or device2_name not in genie_testbed.devices:
+    raise ValueError("Specified devices not found in the testbed.")
 
 device1 = genie_testbed.devices[device1_name]
 device2 = genie_testbed.devices[device2_name]
